@@ -13,7 +13,7 @@ class Carthage < Formula
     sha256 "576468454342dc278837901358ce2f325584307cafd457ae9ada46436b84a941" => :high_sierra
   end
 
-  depends_on :xcode => ["9.4", :build]
+  depends_on :xcode => ["10.1", :build]
 
   def install
     system "make", "prefix_install", "PREFIX=#{prefix}"
