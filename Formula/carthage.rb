@@ -3,6 +3,7 @@ class Carthage < Formula
   homepage "https://github.com/nsoperations/Carthage"
   url "https://github.com/nsoperations/Carthage.git",
       :branch   => "master",
+      :version  => "0.32.0+nsoperations",
       :shallow  => false
   head "https://github.com/nsoperations/Carthage.git", :shallow => false
 
