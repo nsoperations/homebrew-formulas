@@ -9,9 +9,10 @@ class Carthage < Formula
   head "https://github.com/nsoperations/Carthage.git", :shallow => false
 
   bottle do
-    cellar :any
-    sha256 "265d7c1e06f0acb8f5615b6c1d71ffc05b05844bb0fb1da931799ec18ca318a5" => :mojave
-    sha256 "576468454342dc278837901358ce2f325584307cafd457ae9ada46436b84a941" => :high_sierra
+    root_url "https://homebrew.bintray.com/bottles-formulas"
+    cellar :any_skip_relocation
+    rebuild 1
+    sha256 "0fd53e8d4d87fc4279552ec4a921944ac0f2b283885aa7c1307bd97a4b912217" => :mojave
   end
 
   depends_on :xcode => ["9.4", :build]
