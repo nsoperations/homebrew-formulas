@@ -9,7 +9,7 @@ class Carthage < Formula
   head "https://github.com/nsoperations/Carthage.git", :shallow => false
 
   bottle do
-    root_url "https://dl.bintray.com/nsoperations/bottles-formulas/bottles-formulas"
+    root_url "https://dl.bintray.com/nsoperations/bottles-formulas"
     cellar :any_skip_relocation
     rebuild 2
     sha256 "91d7910b7cf5788524fb3aff9911a0399e2c704f590003d38b0125a23dc40f3b" => :mojave
