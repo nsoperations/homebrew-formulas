@@ -11,7 +11,7 @@ class Carthage < Formula
   depends_on :xcode => ["10.2", :build]
 
   bottle do
-    root_url "https://homebrew.bintray.com/bottles-formulas"
+    root_url "https://dl.bintray.com/nsoperations/bottles-formulas"
     cellar :any_skip_relocation
     sha256 "e60e47736349bff972f0f91c5c39238d186673b7fe3af8a21279d068b98ec19e" => :mojave
   end
