@@ -18,6 +18,10 @@ class Carthage < Formula
   end
 
   def install
+    if MacOS::Xcode.version >= "10.2" && MacOS.full_version < "10.14.4" && MacOS.version >= "10.14"
+      odie "Xcode >=10.2 requires macOS >=10.14.4 to build Swift formulae."
+    end
+
     system "make", "prefix_install", "PREFIX=#{prefix}"
     bash_completion.install "Source/Scripts/carthage-bash-completion" => "carthage"
     zsh_completion.install "Source/Scripts/carthage-zsh-completion" => "_carthage"
