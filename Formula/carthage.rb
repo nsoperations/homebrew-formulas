@@ -13,7 +13,8 @@ class Carthage < Formula
   bottle do
     root_url "https://dl.bintray.com/nsoperations/bottles-formulas"
     cellar :any_skip_relocation
-    sha256 "f5e071cb66f0ab4f3ac41f231ab2dc0535c9bb10036b49357a9c4475978355c8" => :mojave
+    rebuild 1
+    sha256 "2c4307935311841676d2412e981d3a4b1922a5347db08625e315ae59927a0f46" => :mojave
   end
 
   def install
