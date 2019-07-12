@@ -10,6 +10,12 @@ class Carthage < Formula
 
   depends_on :xcode => ["10.2", :build]
 
+  bottle do
+    root_url "https://dl.bintray.com/nsoperations/bottles-formulas"
+    cellar :any_skip_relocation
+    sha256 "a813b1c2eb4c50e8c54c56d1024ae6f94e24a46c201cba30c32ccfe44c5f0265" => :mojave
+  end
+
   def install
     if MacOS::Xcode.version >= "10.2" && MacOS.full_version < "10.14.4" && MacOS.version >= "10.14"
       odie "Xcode >=10.2 requires macOS >=10.14.4 to build Swift formulae."
