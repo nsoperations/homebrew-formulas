@@ -2,19 +2,19 @@ class Carthage < Formula
   desc "Decentralized dependency manager for Cocoa"
   homepage "https://github.com/nsoperations/Carthage"
   url "https://github.com/nsoperations/Carthage.git",
-      :tag      => "0.38.1+nsoperations",
-      :version  => "0.38.1",
-      :revision => "10c50a943f543e9e98131c47a1bebfa1487a44fe",
+      :tag      => "0.39.0+nsoperations",
+      :version  => "0.39.0",
+      :revision => "613c20d4f39f9b074760783990033ba8daafec69",
       :shallow  => false
   head "https://github.com/nsoperations/Carthage.git", :shallow => false
 
   depends_on :xcode => ["10.2", :build]
 
-  bottle do
-   root_url "https://dl.bintray.com/nsoperations/bottles-formulas"
-   cellar :any_skip_relocation
-   sha256 "583108695d2ed1ff864852338426c24e4d7cf94bf6bf1058c7958318e6bec9f6" => :mojave
-  end
+  #bottle do
+  # root_url "https://dl.bintray.com/nsoperations/bottles-formulas"
+  # cellar :any_skip_relocation
+  # sha256 "583108695d2ed1ff864852338426c24e4d7cf94bf6bf1058c7958318e6bec9f6" => :mojave
+  #end
 
   def install
     if MacOS::Xcode.version >= "10.2" && MacOS.full_version < "10.14.4" && MacOS.version >= "10.14"
