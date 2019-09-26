@@ -10,11 +10,11 @@ class Carthage < Formula
 
   depends_on :xcode => ["10.2", :build]
 
-  #bottle do
-  #  root_url "https://dl.bintray.com/nsoperations/bottles-formulas"
-  #  cellar :any_skip_relocation
-  #  sha256 "9f27aa237ba73aa253068d7ebe6bd59df9aad9433a0288d16ba7660a3480e6b3" => :mojave
-  #end
+  bottle do
+    root_url "https://dl.bintray.com/nsoperations/bottles-formulas"
+    cellar :any_skip_relocation
+    sha256 "e195bfbbb9c2ec3c575243f1a89f4cb04147cb3973e4eeaaf557fb73d21c0c65" => :mojave
+  end
 
   def install
     if MacOS::Xcode.version >= "10.2" && MacOS.full_version < "10.14.4" && MacOS.version >= "10.14"
