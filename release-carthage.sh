@@ -69,8 +69,7 @@ pushd > /dev/null
 
 cd "$SCRIPT_DIR"
 
-git reset --hard
-git pull
+git pull || fail "Could not pull from remote"
 
 sed -i.bak -E "s/^(.*:tag[[:space:]]*=>[[:space:]]*\")(.*)(\".*)$/\1${VERSION}\3/g" "$FORMULA_FILE"
 sed -i.bak -E "s/^(.*:version[[:space:]]*=>[[:space:]]*\")(.*)(\".*)$/\1${RAW_VERSION}\3/g" "$FORMULA_FILE"
@@ -80,13 +79,13 @@ brew uninstall carthage
 brew install --build-bottle "$FORMULA_FILE" || fail "Build bottle failed"
 brew bottle --force-core-tap "$FORMULA_FILE" > "$BOTTLE_OUTPUT" || fail "Export of bottle failed"
 
-BINARY_HASH="$(cat "$BOTTLE_OUTPUT" | sed -n -E -e 's/sha256[[:space:]]*"(.*)".*/\1/p')"
+BINARY_HASH="$(cat "$BOTTLE_OUTPUT" | sed -n -E -e 's/sha256[[:space:]]*"(.*)".*/\1/p' | tr -d '[:space:]')"
 
 sed -i.bak -E "s/^(.*sha256[[:space:]]*\")(.*)(\".*)$/\1${BINARY_HASH}\3/g" "$FORMULA_FILE"
 
 output "Uploading to bintray..."
 
-curl --show-error --fail -s --request PUT --user "werner77:${BINTRAY_API_KEY}" --header "X-Checksum-Sha2: ${BINARY_HASH}" --header "X-Bintray-Package: Carthage" --header "X-Bintray-Version: ${VERSION}" --header "X-Bintray-Publish: 1" --upload-file "./carthage--${RAW_VERSION}.mojave.bottle.tar.gz" "https://bintray.com/content/nsoperations/bottles-formulas/carthage-${RAW_VERSION}.mojave.bottle.tar.gz" || fail "Could not upload package to bintray"
+curl --show-error --fail -s --request PUT --user "werner77:${BINTRAY_API_KEY}" --header "X-Checksum-Sha2: ${BINARY_HASH}" --header "X-Bintray-Package: Carthage" --header "X-Bintray-Version: ${VERSION}" --header "X-Bintray-Publish: 1" --upload-file "./carthage--${RAW_VERSION}.mojave.bottle.tar.gz" "https://api.bintray.com/content/nsoperations/bottles-formulas/carthage-${RAW_VERSION}.mojave.bottle.tar.gz" || fail "Could not upload package to bintray"
 
 output "Pushing updated formula"
 
