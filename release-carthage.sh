@@ -77,7 +77,7 @@ sed -i.bak -E "s/^(.*:version[[:space:]]*=>[[:space:]]*\")(.*)(\".*)$/\1${RAW_VE
 sed -i.bak -E "s/^(.*:revision[[:space:]]*=>[[:space:]]*\")(.*)(\".*)$/\1${COMMIT_HASH}\3/g" "$FORMULA_FILE"
 
 brew uninstall carthage
-brew install --build-from-source --build-bottle "$FORMULA_FILE" || fail "Build bottle failed"
+brew install --build-bottle "$FORMULA_FILE" || fail "Build bottle failed"
 brew bottle --force-core-tap "$FORMULA_FILE" > "$BOTTLE_OUTPUT" || fail "Export of bottle failed"
 
 BINARY_HASH="$(cat "$BOTTLE_OUTPUT" | sed -n -E -e 's/sha256[[:space:]]*"(.*)".*/\1/p')"
