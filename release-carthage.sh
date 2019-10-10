@@ -58,7 +58,7 @@ pushd carthage > /dev/null
 git checkout master || fail "Could not checkout master branch"
 
 #git tag -a -m "Tagged version $VERSION" "$VERSION" || fail "Could not tag version $VERSION"
-#git push --tags
+#git push --tags || fail "Could not push tags"
 
 COMMIT_HASH=$(git rev-parse HEAD)
 
