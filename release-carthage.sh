@@ -37,6 +37,10 @@ if [ "$#" -ne 1 ]; then
 	usage
 fi
 
+if [ -z "$BINTRAY_API_KEY" ]; then
+	fail "Please set the BINTRAY_API_KEY environment variable"
+fi
+
 RAW_VERSION="$1"
 SCRIPT_DIR=$(real_base_name "$0")
 VERSION="${RAW_VERSION}+nsoperations"
@@ -49,31 +53,38 @@ trap "rm -rf ${TEMP_DIR}" INT TERM EXIT
 
 output "Using temporary directory $TEMP_DIR"
 
-pushd "$TEMP_DIR" > /dev/null || fail "Could not change directories to $TEMP_DIR"
+cd "$TEMP_DIR" || fail "Could not change directories to $TEMP_DIR"
 
 git clone https://github.com/nsoperations/carthage carthage || fail "Could not clone nsoperations/carthage from github"
 
-pushd carthage > /dev/null
+cd carthage > /dev/null
 
 git checkout master || fail "Could not checkout master branch"
 
-#git tag -a -m "Tagged version $VERSION" "$VERSION" || fail "Could not tag version $VERSION"
-#git push --tags || fail "Could not push tags"
+TAG_EXISTS=$(git tag -l | grep "$VERSION")
+
+if [ -n "$TAG_EXISTS" ]; then
+
+	git checkout "$VERSION"
+
+else
+
+	git tag -a -m "Tagged version $VERSION" "$VERSION" || fail "Could not tag version $VERSION"
+	git push --tags || fail "Could not push tags"
+
+fi
 
 COMMIT_HASH=$(git rev-parse HEAD)
 
 output "Tagged version $VERSION with commit hash $COMMIT_HASH"
 
-pushd > /dev/null
-pushd > /dev/null
-
 cd "$SCRIPT_DIR"
 
 git pull || fail "Could not pull from remote"
 
-sed -i.bak -E "s/^(.*:tag[[:space:]]*=>[[:space:]]*\")(.*)(\".*)$/\1${VERSION}\3/g" "$FORMULA_FILE"
-sed -i.bak -E "s/^(.*:version[[:space:]]*=>[[:space:]]*\")(.*)(\".*)$/\1${RAW_VERSION}\3/g" "$FORMULA_FILE"
-sed -i.bak -E "s/^(.*:revision[[:space:]]*=>[[:space:]]*\")(.*)(\".*)$/\1${COMMIT_HASH}\3/g" "$FORMULA_FILE"
+sed -i "" -E "s/^(.*:tag[[:space:]]*=>[[:space:]]*\")(.*)(\".*)$/\1${VERSION}\3/g" "$FORMULA_FILE"
+sed -i "" -E "s/^(.*:version[[:space:]]*=>[[:space:]]*\")(.*)(\".*)$/\1${RAW_VERSION}\3/g" "$FORMULA_FILE"
+sed -i "" -E "s/^(.*:revision[[:space:]]*=>[[:space:]]*\")(.*)(\".*)$/\1${COMMIT_HASH}\3/g" "$FORMULA_FILE"
 
 brew uninstall carthage
 brew install --build-bottle "$FORMULA_FILE" || fail "Build bottle failed"
@@ -81,7 +92,11 @@ brew bottle --force-core-tap "$FORMULA_FILE" > "$BOTTLE_OUTPUT" || fail "Export 
 
 BINARY_HASH="$(cat "$BOTTLE_OUTPUT" | sed -n -E -e 's/sha256[[:space:]]*"(.*)".*/\1/p' | tr -d '[:space:]')"
 
-sed -i.bak -E "s/^(.*sha256[[:space:]]*\")(.*)(\".*)$/\1${BINARY_HASH}\3/g" "$FORMULA_FILE"
+if [ -z "$BINARY_HASH" ]; then
+	fail "Could not extract binary hash"
+fi
+
+sed -i "" -E "s/^(.*sha256[[:space:]]*\")(.*)(\".*)$/\1${BINARY_HASH}\3/g" "$FORMULA_FILE"
 
 output "Uploading to bintray..."
 
