@@ -88,6 +88,13 @@ sed -i "" -E "s/^(.*:revision[[:space:]]*=>[[:space:]]*\")(.*)(\".*)$/\1${COMMIT
 
 brew uninstall carthage
 brew install --build-bottle "$FORMULA_FILE" || fail "Build bottle failed"
+
+INSTALLED_VERSION=$(/usr/local/bin/carthage version)
+
+if [ "$INSTALLED_VERSION" != "$VERSION" ]; then
+  fail "The carthage version does not match the tag specified. Did you forget to update CarthageKitVersion.swift?"
+fi
+
 brew bottle --force-core-tap "$FORMULA_FILE" > "$BOTTLE_OUTPUT" || fail "Export of bottle failed"
 
 BINARY_HASH="$(cat "$BOTTLE_OUTPUT" | sed -n -E -e 's/sha256[[:space:]]*"(.*)".*/\1/p' | tr -d '[:space:]')"
