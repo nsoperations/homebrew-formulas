@@ -2,9 +2,9 @@ class Carthage < Formula
   desc "Decentralized dependency manager for Cocoa"
   homepage "https://github.com/nsoperations/Carthage"
   url "https://github.com/nsoperations/Carthage.git",
-      :tag      => "0.45.0+nsoperations",
-      :version  => "0.45.0",
-      :revision => "7964aae2b3782ad717347c42a0df6bf9461c984e",
+      :tag      => "0.45.1+nsoperations",
+      :version  => "0.45.1",
+      :revision => "0559870843d0c68922aee9064f564bfa12a40242",
       :shallow  => false
   head "https://github.com/nsoperations/Carthage.git", :shallow => false
 
@@ -13,7 +13,7 @@ class Carthage < Formula
   bottle do
     root_url "https://dl.bintray.com/nsoperations/bottles-formulas"
     cellar :any_skip_relocation
-    sha256 "5aaf3da0f052264f62e43660f450707ed0c494e5a8e0f2a97b12501969f6baad" => :mojave
+    sha256 "d9de6bfde051c7ccf4617ffde22ebe1565f8a42bc8225bb056bf63feb11b8123" => :mojave
   end
 
   def install
